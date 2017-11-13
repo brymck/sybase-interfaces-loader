@@ -1,18 +1,22 @@
 {
-  "compilerOptions": {
-    "lib": ["es6"],
-    "module": "commonjs",
-    "target": "es5",
-    "moduleResolution": "node",
-    "declaration": true,
-    "rootDir": ".",
-    "outDir": "./dist",
-    "types": ["node", "jasmine"],
-    "strict": true
-  },
-  "include": [
-    "index.ts",
-    "lib/**/*",
-    "spec/**/*"
-  ]
+	"compilerOptions": {
+    "baseUrl": ".",
+		"declaration": true,
+		"lib": ["es6"],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"outDir": "./dist",
+		"paths": {
+			"@src/*": ["src/*"]
+		},
+		"rootDir": ".",
+		"strict": true,
+		"target": "es5",
+		"types": ["node", "jasmine"]
+	},
+	"include": [
+		"index.ts",
+		"lib/**/*",
+		"spec/**/*"
+	]
 }

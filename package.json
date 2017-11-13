@@ -7,14 +7,11 @@
   },
   "description": "Sybase interfaces loader",
   "main": "dist/index.js",
-  "typings": "definitions/index",
-  "typescript": {
-    "definition": "definitions/index"
-  },
+  "typings": "typings/index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "standard-version"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "interfaces",

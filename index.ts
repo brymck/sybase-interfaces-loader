@@ -6,37 +6,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-type Maybe<T> = T | undefined;
-
-type SybaseEntryField =
-  | 'serviceType'
-  | 'protocol'
-  | 'network'
-  | 'machine'
-  | 'port'
-  | 'filter';
-
-interface IHosts {
-  [key: string]: ISybaseEntry[];
-}
-
-interface ISybaseEntry {
-  serviceType: string;
-  protocol: string;
-  network: string;
-  machine: string;
-  port: string;
-  filter: Maybe<string>;
-}
-
-interface ISybaseFilter {
-  serviceType?: string;
-  protocol?: string;
-  network?: string;
-  machine?: string;
-  port?: string;
-  filter?: Maybe<string>;
-}
+import {
+  IHosts,
+  ISybaseEntry,
+  ISybaseFilter,
+  Maybe,
+  SybaseEntryField
+} from '@src/interfaces';
 
 // tslint:disable-next-line:prefer-const
 let hosts: IHosts = {};
