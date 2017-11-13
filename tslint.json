@@ -1,0 +1,6 @@
+{
+  "extends": "tslint-microsoft-contrib",
+  "rules": {
+    "max-line-length": [true, 120]
+  }
+}
