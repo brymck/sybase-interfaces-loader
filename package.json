@@ -1,0 +1,44 @@
+{
+  "name": "sybase-interfaces-loader",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/brymck/sybase-interfaces-loader.git"
+  },
+  "description": "Sybase interfaces loader",
+  "main": "dist/index.js",
+  "typings": "definitions/index",
+  "typescript": {
+    "definition": "definitions/index"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "keywords": [
+    "interfaces",
+    "sybase"
+  ],
+  "author": {
+    "name": "Bryan McKelvey",
+    "email": "bryan.mckelvey@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jasmine": "^2.6.3",
+    "@types/node": "^8.0.51",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-jasmine": "^2.4.2",
+    "gulp-typescript": "^3.2.3",
+    "jasmine": "^2.8.0",
+    "merge2": "^1.2.0",
+    "rimraf": "^2.6.2",
+    "run-sequence": "^2.2.0",
+    "standard-version": "^4.2.0",
+    "tslint": "^5.8.0",
+    "tslint-microsoft-contrib": "^5.0.1",
+    "typescript": "^2.6.1"
+  }
+}
