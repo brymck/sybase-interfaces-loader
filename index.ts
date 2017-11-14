@@ -84,7 +84,7 @@ function passesFilter(entry: ISybaseEntry, filter: ISybaseFilter = {}): boolean 
   ));
 }
 
-function filterEntries(serverName: string, filter: ISybaseFilter, callback: (entries: ISybaseEntry[]) => void): void {
+export function filterEntries(serverName: string, filter: ISybaseFilter, callback: (entries: ISybaseEntry[]) => void): void {
   loadInterfaces((h: IHosts) => {
     const allEntries: ISybaseEntry[] = h[serverName];
     const matchingEntries: ISybaseEntry[] = allEntries.filter((m: ISybaseEntry) => passesFilter(m, filter));
@@ -92,15 +92,10 @@ function filterEntries(serverName: string, filter: ISybaseFilter, callback: (ent
   });
 }
 
-function findEntry(serverName: string, filter: ISybaseFilter, callback: (entry: Maybe<ISybaseEntry>) => void): void {
+export function findEntry(serverName: string, filter: ISybaseFilter, callback: (entry: Maybe<ISybaseEntry>) => void): void {
   loadInterfaces((h: IHosts) => {
     const allEntries: ISybaseEntry[] = h[serverName];
     const queryEntry: Maybe<ISybaseEntry> = allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
     callback(queryEntry);
   });
 }
-
-module.exports = {
-  filterEntries,
-  findEntry
-};
