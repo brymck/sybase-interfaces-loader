@@ -2,16 +2,15 @@
  * test
  */
 import { assert } from 'chai';
-import * as fs from 'fs';
 import * as mock from 'mock-fs';
 
-import { ISybaseEntry } from '@src/interfaces';
 import { filterEntries } from '..';
+import { ISybaseEntry } from '../src//interfaces';
 
 describe('filterEntries', () => {
-  before(() => {
-    mock({
-        '/usr/local/sybase/interfaces':
+  const env: NodeJS.ProcessEnv = { ...process.env };
+
+  const interfacesFile: string =
 `alpha
 \tmaster tcp ether alpha.example.com 4100
 \tquery tcp ether alpha.example.com 4100
@@ -21,15 +20,38 @@ beta
 gamma
 \tmaster tcp ether gamma.example.com 4100
 \tquery tcp ether gamma.example.com 4100
-`
+`;
+
+  const expectedMasterEntry: ISybaseEntry = {
+    serviceType: 'master',
+    protocol: 'tcp',
+    network: 'ether',
+    machine: 'alpha.example.com',
+    port: '4100',
+    filter: undefined
+  };
+  const expectedQueryEntry: ISybaseEntry = { ...expectedMasterEntry, serviceType: 'query' };
+
+  before(() => {
+    mock({
+        '/usr/local/sybase/interfaces': interfacesFile
     });
+    delete process.env.SYBASE;
+    delete process.env.IFILE;
   });
 
-  after(() => mock.restore());
+  after(() => {
+    process.env = env;
+    mock.restore();
+  });
 
-  it('should filter', (done: MochaDone) => {
+  it('should retrieve the master and query entries when both exist', (done: MochaDone) => {
     filterEntries('alpha', {}, (entries: ISybaseEntry[]) => {
-      assert.equal(entries.length, 2, 'entries should equal 2');
+      assert.lengthOf(entries, 2, 'entries length is 2');
+      const masterEntry: ISybaseEntry = <ISybaseEntry>entries.find((e: ISybaseEntry) => e.serviceType === 'master');
+      const queryEntry: ISybaseEntry = <ISybaseEntry>entries.find((e: ISybaseEntry) => e.serviceType === 'query');
+      assert.deepEqual(masterEntry, expectedMasterEntry);
+      assert.deepEqual(queryEntry, expectedQueryEntry);
       done();
     });
   });

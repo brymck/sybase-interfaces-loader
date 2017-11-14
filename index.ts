@@ -33,7 +33,7 @@ function locateInterfacesFile(): string {
   } else if (process.env.SYBASE != null) {
     return path.join(<string>process.env.SYBASE, 'interfaces');
   } else {
-    return '/usr/local/sybase';
+    return '/usr/local/sybase/interfaces';
   }
 }
 
