@@ -6,12 +6,17 @@
     "url": "git://github.com/brymck/sybase-interfaces-loader.git"
   },
   "description": "Sybase interfaces loader",
-  "main": "dist/index.js",
-  "typings": "typings/index.d.ts",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
     "build": "tsc",
-    "test": "mocha --opts mocha.opts"
+    "clean": "shx rm -rf dist",
+    "cz": "git-cz",
+    "precommit": "lint-staged",
+    "prepublish": "npm run build",
+    "prerelease": "npm run build",
+    "test": "mocha --opts mocha.opts",
+    "test:watch": "npm run test -- --watch"
   },
   "keywords": [
     "interfaces",
@@ -28,8 +33,11 @@
     "@types/mock-fs": "^3.6.30",
     "@types/node": "^8.0.51",
     "chai": "^4.1.2",
+    "commitizen": "^2.9.6",
     "mocha": "^4.0.1",
     "mock-fs": "^4.4.2",
+    "shx": "^0.2.2",
+    "standard-version": "^4.2.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
     "tslint-microsoft-contrib": "^5.0.1",
