@@ -2,9 +2,7 @@
 !dist/
 !dist/*
 !dist/**/*
-!definitions/
-!definitions/*
 !*.ts
-!lib/*.ts
+!src/*.ts
 !package.json
 !*.md
