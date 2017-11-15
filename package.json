@@ -1,6 +1,6 @@
 {
   "name": "sybase-interfaces-loader",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/brymck/sybase-interfaces-loader.git"
