@@ -11,12 +11,35 @@
   "scripts": {
     "build": "tsc",
     "clean": "shx rm -rf dist",
+    "commitmsg": "validate-commit-msg",
     "cz": "git-cz",
     "precommit": "lint-staged",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "prerelease": "npm run build",
+    "prettier:ts": "prettier --single-quote --print-width 120 --trailing-comma es5 --no-semi --parser typescript",
+    "release:github": "git push --no-verify --follow-tags origin master",
+    "release:npm": "npm publish",
+    "release:preflight": "irish-pub",
+    "release:preflight:package": "npm pack",
+    "size": "shx echo \"Gzipped Size:\" && cross-var strip-json-comments --no-whitespace $npm_package_main | gzip-size",
     "test": "mocha --opts mocha.opts",
     "test:watch": "npm run test -- --watch"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": "conventional-commit-types",
+      "maxSubjectLength": 120
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "npm run prettier:ts -- --write",
+      "ts:lint:fix",
+      "git add"
+    ]
   },
   "keywords": [
     "interfaces",
@@ -32,10 +55,15 @@
     "@types/mocha": "^2.2.44",
     "@types/mock-fs": "^3.6.30",
     "@types/node": "^8.0.51",
+    "awesome-typescript-loader": "^3.3.0",
     "chai": "^4.1.2",
     "commitizen": "^2.9.6",
+    "cross-var": "^1.1.0",
+    "gzip-size-cli": "^2.1.0",
+    "lint-staged": "^5.0.0",
     "mocha": "^4.0.1",
     "mock-fs": "^4.4.2",
+    "prettier": "^1.8.2",
     "shx": "^0.2.2",
     "standard-version": "^4.2.0",
     "ts-node": "^3.3.0",
