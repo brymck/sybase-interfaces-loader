@@ -6,9 +6,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
-    "paths": {
-      "@src/*": ["src/*"]
-    },
     "rootDir": ".",
     "strict": true,
     "target": "es5",

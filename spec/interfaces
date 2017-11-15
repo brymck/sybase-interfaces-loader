@@ -1,9 +1,0 @@
-alpha
-	master tcp ether alpha.example.com 4100
-	query tcp ether alpha.example.com 4100
-beta
-	master tcp ether beta.example.com 4100
-	query tcp ether beta.example.com 4100
-gamma
-	master tcp ether gamma.example.com 4100
-	query tcp ether gamma.example.com 4100

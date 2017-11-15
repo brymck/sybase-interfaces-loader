@@ -24,31 +24,15 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.0.4",
-    "@types/jest": "^21.1.6",
     "@types/mocha": "^2.2.44",
     "@types/mock-fs": "^3.6.30",
     "@types/node": "^8.0.51",
     "chai": "^4.1.2",
-    "jest": "^21.2.1",
     "mocha": "^4.0.1",
     "mock-fs": "^4.4.2",
-    "run-sequence": "^2.2.0",
-    "standard-version": "^4.2.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
     "tslint-microsoft-contrib": "^5.0.1",
     "typescript": "^2.6.1"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.ts$": "<rootDir>/preprocessor.js"
-    },
-    "testMatch": [
-      "**/spec/*.ts"
-    ]
   }
 }

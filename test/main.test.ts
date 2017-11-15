@@ -4,8 +4,8 @@
 import { assert } from 'chai';
 import * as mock from 'mock-fs';
 
-import { filterEntries } from '..';
-import { ISybaseEntry } from '../src//interfaces';
+import { filterEntries } from '../src';
+import { ISybaseEntry } from '../src/interfaces';
 
 describe('filterEntries', () => {
   const env: NodeJS.ProcessEnv = { ...process.env };

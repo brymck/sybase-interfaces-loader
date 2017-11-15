@@ -12,7 +12,7 @@ import {
   ISybaseFilter,
   Maybe,
   SybaseEntryField
-} from '@src/interfaces';
+} from './interfaces';
 
 // tslint:disable-next-line:prefer-const
 let hosts: IHosts = {};
