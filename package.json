@@ -55,6 +55,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.0.4",
+    "@types/event-stream": "^3.3.33",
     "@types/mocha": "^2.2.44",
     "@types/mock-fs": "^3.6.30",
     "@types/node": "^8.0.51",
@@ -62,6 +63,7 @@
     "chai": "^4.1.2",
     "commitizen": "^2.9.6",
     "cross-var": "^1.1.0",
+    "event-stream": "^3.3.4",
     "gzip-size-cli": "^2.1.0",
     "irish-pub": "^0.2.0",
     "lint-staged": "^5.0.0",

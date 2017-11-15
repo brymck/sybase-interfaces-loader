@@ -2,6 +2,7 @@
  * @module sybase-interfaces-loader
  */
 
+import * as es from 'event-stream';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
@@ -59,45 +60,37 @@ function locateInterfacesFile(): string {
   }
 }
 
-function loadInterfaces(callback: (hosts: IHosts) => void): void {
+function loadInterfaces(): IHosts {
   if (!isEmpty(hosts)) {
-    callback(hosts);
+    return hosts;
   }
 
   const rl: readline.ReadLine = readline.createInterface({
     input: fs.createReadStream(locateInterfacesFile())
   });
 
+  const lines: string[] = fs.readFileSync(locateInterfacesFile()).toString().split('\n');
+
   let serverName: string = '';
-  rl.on('line', (line: string) => {
+  lines.forEach((line: string) => {
     if (/^\S/.test(line)) {  // server name line
       const parts: string[] = line.split(' ');
       serverName = parts[0];
       hosts[serverName] = [];
     } else if (/^\s+/.test(line)) { // server entry line
       const parts: string[] = trimLeft(line).split(' ');
-      const [
-        serviceType,
-        protocol,
-        network,
-        machine,
-        port,
-        filter
-      ] = parts;
       hosts[serverName].push({
-        serviceType,
-        protocol,
-        network,
-        machine,
-        port,
-        filter
+        serviceType: parts[0],
+        protocol: parts[1],
+        network: parts[2],
+        machine: parts[3],
+        port: parts[4],
+        filter: parts[5]
       });
-    } else {
-      // blank line
     }
   });
 
-  rl.on('close', () => callback(hosts));
+  return hosts;
 }
 
 function passesFilter(entry: ISybaseEntry, filter: ISybaseFilter = {}): boolean {
@@ -106,18 +99,16 @@ function passesFilter(entry: ISybaseEntry, filter: ISybaseFilter = {}): boolean 
   ));
 }
 
-export function filterEntries(serverName: string, filter: ISybaseFilter, callback: (entries: ISybaseEntry[]) => void): void {
-  loadInterfaces((h: IHosts) => {
-    const allEntries: ISybaseEntry[] = h[serverName];
-    const matchingEntries: ISybaseEntry[] = allEntries.filter((m: ISybaseEntry) => passesFilter(m, filter));
-    callback(matchingEntries);
-  });
+export function filterEntries(serverName: string, filter: ISybaseFilter = {}): ISybaseEntry[] {
+  const h: IHosts = loadInterfaces();
+  const allEntries: ISybaseEntry[] = h[serverName];
+
+  return allEntries.filter((m: ISybaseEntry) => passesFilter(m, filter));
 }
 
-export function findEntry(serverName: string, filter: ISybaseFilter, callback: (entry: ISybaseEntry | undefined) => void): void {
-  loadInterfaces((h: IHosts) => {
-    const allEntries: ISybaseEntry[] = h[serverName];
-    const queryEntry: ISybaseEntry | undefined = allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
-    callback(queryEntry);
-  });
+export function findEntry(serverName: string, filter: ISybaseFilter = {}): ISybaseEntry | undefined {
+  const h: IHosts = loadInterfaces();
+  const allEntries: ISybaseEntry[] = h[serverName];
+
+  return allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
 }

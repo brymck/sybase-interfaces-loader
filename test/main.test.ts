@@ -47,15 +47,13 @@ gamma
     mock.restore();
   });
 
-  it('should retrieve the master and query entries when both exist', (done: MochaDone) => {
-    filterEntries('alpha', {}, (entries: ISybaseEntry[]) => {
-      assert.lengthOf(entries, 2, 'entries length is 2');
-      const masterEntry: ISybaseEntry = <ISybaseEntry>entries.find((e: ISybaseEntry) => e.serviceType === 'master');
-      const queryEntry: ISybaseEntry = <ISybaseEntry>entries.find((e: ISybaseEntry) => e.serviceType === 'query');
-      assert.deepEqual(masterEntry, expectedMasterEntry);
-      assert.deepEqual(queryEntry, expectedQueryEntry);
-      done();
-    });
+  it('should retrieve the master and query entries when both exist', () => {
+    const entries: ISybaseEntry[] = filterEntries('alpha');
+    assert.lengthOf(entries, 2, 'entries length is 2');
+    const masterEntry: ISybaseEntry = <ISybaseEntry>entries.find((e: ISybaseEntry) => e.serviceType === 'master');
+    const queryEntry: ISybaseEntry = <ISybaseEntry>entries.find((e: ISybaseEntry) => e.serviceType === 'query');
+    assert.deepEqual(masterEntry, expectedMasterEntry);
+    assert.deepEqual(queryEntry, expectedQueryEntry);
   });
 
   it('should do something about IFILE', () => {
