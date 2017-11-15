@@ -6,13 +6,35 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import {
-  IHosts,
-  ISybaseEntry,
-  ISybaseFilter,
-  Maybe,
-  SybaseEntryField
-} from './interfaces';
+export type SybaseEntryField =
+  | 'serviceType'
+  | 'protocol'
+  | 'network'
+  | 'machine'
+  | 'port'
+  | 'filter';
+
+export interface IHosts {
+  [key: string]: ISybaseEntry[];
+}
+
+export interface ISybaseEntry {
+  serviceType: string;
+  protocol: string;
+  network: string;
+  machine: string;
+  port: string;
+  filter: string | undefined;
+}
+
+export interface ISybaseFilter {
+  serviceType?: string;
+  protocol?: string;
+  network?: string;
+  machine?: string;
+  port?: string;
+  filter?: string | undefined;
+}
 
 // tslint:disable-next-line:prefer-const
 let hosts: IHosts = {};
@@ -92,10 +114,10 @@ export function filterEntries(serverName: string, filter: ISybaseFilter, callbac
   });
 }
 
-export function findEntry(serverName: string, filter: ISybaseFilter, callback: (entry: Maybe<ISybaseEntry>) => void): void {
+export function findEntry(serverName: string, filter: ISybaseFilter, callback: (entry: ISybaseEntry | undefined) => void): void {
   loadInterfaces((h: IHosts) => {
     const allEntries: ISybaseEntry[] = h[serverName];
-    const queryEntry: Maybe<ISybaseEntry> = allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
+    const queryEntry: ISybaseEntry | undefined = allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
     callback(queryEntry);
   });
 }
