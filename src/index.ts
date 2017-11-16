@@ -101,14 +101,18 @@ function passesFilter(entry: ISybaseEntry, filter: ISybaseFilter = {}): boolean 
 
 export function filterEntries(serverName: string, filter: ISybaseFilter = {}): ISybaseEntry[] {
   const h: IHosts = loadInterfaces();
-  const allEntries: ISybaseEntry[] = h[serverName];
+  const allEntries: ISybaseEntry[] = h[serverName] || [];
 
   return allEntries.filter((m: ISybaseEntry) => passesFilter(m, filter));
 }
 
 export function findEntry(serverName: string, filter: ISybaseFilter = {}): ISybaseEntry | undefined {
   const h: IHosts = loadInterfaces();
-  const allEntries: ISybaseEntry[] = h[serverName];
+  const allEntries: ISybaseEntry[] | undefined = h[serverName];
 
-  return allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
+  if (allEntries == null) {
+    return undefined;
+  } else {
+    return allEntries.find((m: ISybaseEntry) => passesFilter(m, filter));
+  }
 }

@@ -6,13 +6,21 @@ import * as mock from 'mock-fs';
 
 import {
   filterEntries,
+  findEntry,
   ISybaseEntry
 } from '../src';
 
-describe('filterEntries', () => {
-  const env: NodeJS.ProcessEnv = { ...process.env };
+const expectedMasterEntry: ISybaseEntry = {
+  serviceType: 'master',
+  protocol: 'tcp',
+  network: 'ether',
+  machine: 'alpha.example.com',
+  port: '4100',
+  filter: undefined
+};
+const expectedQueryEntry: ISybaseEntry = { ...expectedMasterEntry, serviceType: 'query' };
 
-  const interfacesFile: string =
+const interfacesFileContent: string =
 `alpha
 \tmaster tcp ether alpha.example.com 4100
 \tquery tcp ether alpha.example.com 4100
@@ -24,28 +32,21 @@ gamma
 \tquery tcp ether gamma.example.com 4100
 `;
 
-  const expectedMasterEntry: ISybaseEntry = {
-    serviceType: 'master',
-    protocol: 'tcp',
-    network: 'ether',
-    machine: 'alpha.example.com',
-    port: '4100',
-    filter: undefined
-  };
-  const expectedQueryEntry: ISybaseEntry = { ...expectedMasterEntry, serviceType: 'query' };
-
-  before(() => {
-    mock({
-        '/usr/local/sybase/interfaces': interfacesFile
-    });
-    delete process.env.SYBASE;
-    delete process.env.IFILE;
+function mockInterfacesFile(): void {
+  mock({
+      '/usr/local/sybase/interfaces': interfacesFileContent
   });
+  delete process.env.SYBASE;
+  delete process.env.IFILE;
+}
 
-  after(() => {
-    process.env = env;
-    mock.restore();
-  });
+function restoreInterfacesFile(): void {
+  mock.restore();
+}
+
+describe('filterEntries', () => {
+  before(mockInterfacesFile);
+  after(restoreInterfacesFile);
 
   it('should retrieve the master and query entries when both exist', () => {
     const entries: ISybaseEntry[] = filterEntries('alpha');
@@ -58,5 +59,25 @@ gamma
 
   it('should do something about IFILE', () => {
     assert.equal(process.env.IFILE, null, 'blah');
+  });
+});
+
+describe('findEntry', () => {
+  before(mockInterfacesFile);
+  after(restoreInterfacesFile);
+
+  it('should return the first matching entry matching', () => {
+    const entry: ISybaseEntry | undefined = findEntry('alpha');
+    assert.deepEqual(entry, expectedMasterEntry);
+  });
+
+  it('should respect filters to match entries', () => {
+    const entry: ISybaseEntry | undefined = findEntry('alpha', { serviceType: 'query' });
+    assert.deepEqual(entry, expectedQueryEntry);
+  });
+
+  it('should return undefined when no entry is found', () => {
+    const entry: ISybaseEntry | undefined = findEntry('delta');
+    assert.notExists(entry, 'entry does not exist');
   });
 });
